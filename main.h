@@ -28,5 +28,10 @@ int print_hex(va_list args);
 int print_string_custom(va_list args);
 int print_string_non_printable(va_list args);
 int print_pointer(va_list args);
+int print_reversed_string(va_list args);
+int print_rot13(va_list args);
+int handle_flag_characters(va_list args);
+int handle_length_modifiers(va_list args);
+int handle_field_width(va_list args);
 #endif
 
