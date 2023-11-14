@@ -67,4 +67,32 @@ int print_percent(__attribute__((unused)) va_list args)
 
 /* Implement print_int and print_binary functions similarly */
 
+/**
+ * print_int - Prints an integer
+ * @args: The argument list
+ * Return: Number of characters printed
+ */
+int print_int(va_list args)
+{
+    int n = va_arg(args, int);
+    int count = 0;
 
+    /* Implement logic to print integer 'n' */
+
+    return count;
+}
+
+/**
+ * print_binary - Prints an integer in binary format
+ * @args: The argument list
+ * Return: Number of characters printed
+ */
+int print_binary(va_list args)
+{
+    unsigned int num = va_arg(args, unsigned int);
+    int count = 0;
+
+    /* Implement logic to print binary representation of 'num' */
+
+    return count;
+}
