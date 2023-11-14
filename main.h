@@ -22,7 +22,10 @@ int print_percent(va_list args);
 int print_int(va_list args);
 int print_binary(va_list args);
 void _putchar(char c);
-
+int print_unsigned(va_list args);
+int print_octal(va_list args);
+int print_hex(va_list args);
+int print_string_custom(va_list args);
 
 #endif
 
