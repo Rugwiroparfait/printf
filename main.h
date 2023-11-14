@@ -26,6 +26,6 @@ int print_unsigned(va_list args);
 int print_octal(va_list args);
 int print_hex(va_list args);
 int print_string_custom(va_list args);
-
+int print_string_non_printable(va_list args);
 #endif
 
