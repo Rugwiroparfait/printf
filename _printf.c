@@ -1,40 +1,49 @@
-// _printf.c
-
+#include <stddef.h>
 #include "main.h"
 
 /**
- * _printf - Custom printf function
+ * _printf - Produces output according to a format.
  * @format: The format string
- * Return: Total number of characters printed
+ *
+ * Return: The number of characters printed (excluding null byte)
  */
 int _printf(const char *format, ...)
 {
-    va_list args;
-    int count = 0;
+	va_list args;
+	int count = 0;
+	int i, j;
 
-    va_start(args, format);
+	format_t specs[] = {
+		{"c", print_char},
+		{"s", print_str},
+		{"%", print_percent},
+		{"d", print_int},
+		{"i", print_int},
+		{"b", print_binary},
+		{NULL, NULL}
+	};
 
-    /* Iterate through the format string and call custom print functions */
-    while (*format)
-    {
-        if (*format == '%' && /* logic to identify custom conversion specifiers */)
-        {
-            /* Call the corresponding custom print function */
-            count += handle_length_modifiers(args); // Example for task 9
-            /* Continue with other custom print functions */
-        }
-        else
-        {
-            /* Regular character, just print it */
-            _putchar(*format);
-            count++;
-        }
+	va_start(args, format);
 
-        format++;
-    }
+	for (i = 0; format && format[i]; i++)
+	{
+		if (format[i] == '%' && format[i + 1] != '\0')
+		{
+			i++;
+			for (j = 0; specs[j].spec != NULL; j++)
+			{
+				if (format[i] == *specs[j].spec)
+					count += specs[j].f(args);
+			}
+		}
+		else
+		{
+			_putchar(format[i]);
+			count++;
+		}
+	}
 
-    va_end(args);
-
-    return count;
+	va_end(args);
+	return (count);
 }
 
