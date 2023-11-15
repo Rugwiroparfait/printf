@@ -1,49 +1,66 @@
-#include <stddef.h>
+/* _printf.c */
+
 #include "main.h"
+#include <stdarg.h>
+#include <unistd.h>
 
-/**
- * _printf - Produces output according to a format.
- * @format: The format string
- *
- * Return: The number of characters printed (excluding null byte)
- */
-int _printf(const char *format, ...)
+int myputchar(char c)
 {
-	va_list args;
-	int count = 0;
-	int i, j;
-
-	format_t specs[] = {
-		{"c", print_char},
-		{"s", print_str},
-		{"%", print_percent},
-		{"d", print_int},
-		{"i", print_int},
-		{"b", print_binary},
-		{NULL, NULL}
-	};
-
-	va_start(args, format);
-
-	for (i = 0; format && format[i]; i++)
-	{
-		if (format[i] == '%' && format[i + 1] != '\0')
-		{
-			i++;
-			for (j = 0; specs[j].spec != NULL; j++)
-			{
-				if (format[i] == *specs[j].spec)
-					count += specs[j].f(args);
-			}
-		}
-		else
-		{
-			_putchar(format[i]);
-			count++;
-		}
-	}
-
-	va_end(args);
-	return (count);
+    return write(1, &c, 1);
 }
 
+int _printf(const char *format, ...)
+{
+    va_list args;
+    int count = 0;
+    char *str;
+
+    if (format == NULL)
+        return -1;
+
+    va_start(args, format);
+
+    while (*format != '\0')
+    {
+        va_list args_copy;
+
+        if (*format == '%' && *(format + 1) != '\0')
+        {
+            va_copy(args_copy, args);
+
+            switch (*(format + 1))
+            {
+            case 'c':
+                count += myputchar(va_arg(args_copy, int));
+                break;
+            case 's':
+                str = va_arg(args_copy, char *);
+                while (*str)
+                {
+                    count += myputchar(*str);
+                    str++;
+                }
+                break;
+            case '%':
+                count += myputchar('%');
+                break;
+            default:
+                count += myputchar('%');
+                count += myputchar(*(format + 1));
+                break;
+            }
+
+            va_end(args_copy);
+            format += 2;
+        }
+        else
+        {
+            count += myputchar(*format);
+            format++;
+        }
+    }
+
+    va_end(args);
+
+    return count;
+}
